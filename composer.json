@@ -1,0 +1,8 @@
+{
+    "autoload": {
+        "psr-4": {
+            "ContextVariableSets\\": ""
+        }
+    },
+    "name": "oranfry/context-variable-sets"
+}
