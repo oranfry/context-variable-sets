@@ -8,9 +8,9 @@ class Filter extends ContextVariableSet
     public $cmp;
     public $value;
 
-    public function __construct(string $prefix, array $default_data = [])
+    public function __construct(string $prefix, array $default_data = [], ?string $partial = null)
     {
-        parent::__construct($prefix, $default_data);
+        parent::__construct($prefix, $default_data, $partial);
 
         $data = $this->getRawData();
 
@@ -23,14 +23,12 @@ class Filter extends ContextVariableSet
     {
     }
 
-    public function inputs()
+    public function input_names()
     {
-        ?>
-        <div style="display: none">
-            <input class="cv" plaecholder="field" name="<?= $this->prefix ?>__field" value="<?= $this->field ?>">
-            <input class="cv" plaecholder="cmp" name="<?= $this->prefix ?>__cmp" value="<?= $this->cmp ?>">
-            <input class="cv" plaecholder="value" name="<?= $this->prefix ?>__value" value="<?= $this->value ?>">
-        </div>
-    <?php
+        return [
+            'field',
+            'cmp',
+            'value',
+        ];
     }
 }

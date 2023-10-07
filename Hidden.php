@@ -6,25 +6,19 @@ class Hidden extends ContextVariableSet
 {
     public $value;
 
-    public function __construct(string $prefix, array $default_data = [])
+    public function __construct(string $prefix, array $default_data = [], ?string $partial = null)
     {
-        parent::__construct($prefix, $default_data);
+        parent::__construct($prefix, $default_data, $partial);
 
-        $data = $this->getRawData();
-
-        $this->value = @$data['value'];
+        $this->value = @$this->getRawData()['value'];
     }
 
     public function display()
     {
     }
 
-    public function inputs()
+    public function input_names(): array
     {
-        ?>
-        <div style="display: none">
-            <input class="cv" type="hidden" name="<?= $this->prefix ?>__value" value="<?= $this->value ?>">
-        </div>
-        <?php
+        return ['value'];
     }
 }

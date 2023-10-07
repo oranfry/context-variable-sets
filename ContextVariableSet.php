@@ -6,21 +6,29 @@ abstract class ContextVariableSet
 {
     protected static $library = [];
 
-    public string $prefix;
-    public array $default_data;
     public ?string $label;
+    public array $default_data;
     public array $vars = [];
+    private string $partial;
+    public string $prefix;
 
-    public function __construct(string $prefix, array $default_data = [])
+    public function __construct(string $prefix, array $default_data = [], ?string $partial = null)
     {
         $this->prefix = $prefix;
         $this->default_data = $default_data;
+        $this->partial = $partial ?? 'src/php/partial/' . str_replace('\\', '/', static::class) . '.php';
     }
-
-    abstract public function display();
 
     public function inputs()
     {
+        foreach ($this->input_names() as $name) {
+            ?><input class="cv" type="hidden" name="<?= $this->prefix ?>__<?= $name ?>" value="<?= htmlspecialchars($this->$name) ?>"><?php
+        }
+    }
+
+    public function display()
+    {
+        ss_require($this->partial, [], $this);
     }
 
     protected function getRawData()
@@ -78,13 +86,6 @@ abstract class ContextVariableSet
         static::$library[$name] = $object;
     }
 
-    public static function dump()
-    {
-        $function = implode('_', ['var', 'dump']);
-
-        $function(static::$library);
-    }
-
     public function constructQuery($changes)
     {
         $data = static::getValues();
@@ -96,5 +97,20 @@ abstract class ContextVariableSet
         $data = array_filter($data);
 
         return implode('&', array_map(fn ($v, $k) => "{$k}={$v}", array_values($data), array_keys($data)));
+    }
+
+    public static function form()
+    {
+        ?><div style="display: none;"><form id="cvs-form"><div><?php
+            foreach (static::getAll() as $active) {
+                $active->inputs();
+            }
+        ?><div id="new-vars-here"></div><?php
+        ?></div></form></div><?php
+    }
+
+    public function input_names(): array
+    {
+        return [];
     }
 }

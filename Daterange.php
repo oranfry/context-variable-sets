@@ -12,7 +12,7 @@ class Daterange extends ContextVariableSet
     public $period_id = null;
     public $periods;
 
-    public function __construct(string $prefix, array $default_data = [])
+    public function __construct(string $prefix, array $default_data = [], ?string $partial = null)
     {
         $periods = $default_data['periods'] ?? [];
 
@@ -26,14 +26,14 @@ class Daterange extends ContextVariableSet
 
         unset($default_data['periods']);
 
-        parent::__construct($prefix, $default_data);
+        parent::__construct($prefix, $default_data, $partial);
 
         $data = $this->getRawData();
 
         $this->date = @$data['date'] ?: date('Y-m-d');
 
         $period_ids = array_keys($this->periods);
-        $period_id = @$data['period'] ?: @reset($period_ids);
+        $period_id = @$data['period_id'] ?: @reset($period_ids);
 
         if ($period_id && $period = @$this->periods[$period_id]) {
             $this->period_id = $period_id;
@@ -42,17 +42,12 @@ class Daterange extends ContextVariableSet
         }
     }
 
-    public function display()
+    public function input_names(): array
     {
-        ss_require('src/php/partial/contextvariableset/daterange/display.php', array_merge(
-            ['daterange' => $this],
-            $this->computeDates(),
-        ), $this);
-    }
-
-    public function inputs()
-    {
-        ss_require('src/php/partial/contextvariableset/daterange/inputs.php', ['daterange' => $this], $this);
+        return [
+            'date',
+            'period_id',
+        ];
     }
 
     public function getTitle()
