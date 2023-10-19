@@ -10,7 +10,7 @@ if ($this->options):
     endif;
 endif;
 
-$label = $label ?: preg_replace('/.*_/', '', $this->prefix);
+$label = $label ?: $this->label ?: preg_replace('/.*_/', '', $this->prefix);
 
 ?><div class="navset">
     <div class="inline-rel">

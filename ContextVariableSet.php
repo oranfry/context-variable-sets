@@ -6,7 +6,7 @@ abstract class ContextVariableSet
 {
     protected static $library = [];
 
-    public ?string $label;
+    public ?string $label = null;
     public array $default_data;
     public array $vars = [];
     private string $partial;
@@ -22,8 +22,13 @@ abstract class ContextVariableSet
     public function inputs()
     {
         foreach ($this->input_names() as $name) {
-            ?><input class="cv" type="hidden" name="<?= $this->prefix ?>__<?= $name ?>" value="<?= htmlspecialchars($this->$name) ?>"><?php
+            ?><input class="cv" type="hidden" name="<?= $this->prefix ?>__<?= $name ?>" value="<?= htmlspecialchars($this->input_value($name) ?? $this->$name) ?>"><?php
         }
+    }
+
+    public function input_value(string $name): ?string
+    {
+        return null;
     }
 
     public function display()
@@ -94,7 +99,7 @@ abstract class ContextVariableSet
             $data[$this->prefix . '__' . $name] = $value;
         }
 
-        $data = array_filter($data);
+        $data = array_filter($data, fn ($v) => isset($v));
 
         return implode('&', array_map(fn ($v, $k) => "{$k}={$v}", array_values($data), array_keys($data)));
     }
