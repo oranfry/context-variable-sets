@@ -22,7 +22,7 @@ abstract class ContextVariableSet
     public function inputs()
     {
         foreach ($this->input_names() as $name) {
-            ?><input class="cv" type="hidden" name="<?= $this->prefix ?>__<?= $name ?>" value="<?= htmlspecialchars($this->input_value($name) ?? $this->$name) ?>"><?php
+            ?><input class="cv" type="hidden" name="<?= $this->prefix ?>__<?= $name ?>" value="<?= htmlspecialchars($this->input_value($name) ?? $this->$name ?? '') ?>"><?php
         }
     }
 
