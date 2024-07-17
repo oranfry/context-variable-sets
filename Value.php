@@ -4,8 +4,8 @@ namespace ContextVariableSets;
 
 class Value extends ContextVariableSet
 {
-    public $value;
     public $options;
+    public $value;
 
     public function __construct(string $prefix, array $default_data = [], ?string $partial = null)
     {

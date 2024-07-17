@@ -6,17 +6,24 @@ abstract class ContextVariableSet
 {
     protected static $library = [];
 
-    public ?string $label = null;
     public array $default_data;
-    public array $vars = [];
+    public bool $disabled = false;
+    public ?string $label = null;
     private string $partial;
     public string $prefix;
+    public array $vars = [];
 
     public function __construct(string $prefix, array $default_data = [], ?string $partial = null)
     {
         $this->prefix = $prefix;
         $this->default_data = $default_data;
         $this->partial = $partial ?? 'src/php/partial/' . str_replace('\\', '/', static::class) . '.php';
+
+        if (isset($default_data['disabled'])) {
+            $this->disabled = (bool) $default_data['disabled'];
+        }
+
+        unset($default_data['disabled']);
     }
 
     public function inputs()

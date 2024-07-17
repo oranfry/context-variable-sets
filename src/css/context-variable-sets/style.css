@@ -10,3 +10,11 @@ a.cv-manip {
 .cvs-daterange .drnav {
     margin-left: .5em;
 }
+
+.cv-disabled {
+    color: #3337;
+}
+
+.cv-manip.cv-disabled, .cv-surrogate.cv-disabled {
+    cursor: not-allowed;;
+}

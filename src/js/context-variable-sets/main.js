@@ -130,19 +130,30 @@
 
     $('a.cv-manip').on('click', function(e) {
         e.preventDefault();
+
+        if ($(this).hasClass('cv-disabled')) {
+            return;
+        }
+
         manip.call(this);
         cvsApply();
     });
 
     $('input.cv-manip:not(.cv-surrogate), select.cv-manip:not(.cv-surrogate)').on('change', function(e) {
+        if ($(this).hasClass('cv-disabled')) {
+            return;
+        }
+
         manip.call(this);
         cvsApply();
     });
 
-    $('.cv-surrogate').on('change', function(e){
-        console.log('x');
-
+    $('.cv-surrogate').on('change', function(e) {
         e.preventDefault();
+
+        if ($(this).hasClass('cv-disabled')) {
+            return;
+        }
 
         var for_cv = $(this).data('for');
         var value = $(this).is('[type="checkbox"]') && $(this).is(':checked') || $(this).val() || null;
